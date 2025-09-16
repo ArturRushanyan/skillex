@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS combinations (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    combination_text VARCHAR(255) NOT NULL
+);

@@ -1,6 +1,7 @@
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const config = require("./configs/config");
+const errorHandler = require("./error/errorHandler");
 
 const startServer = async (app) => {
     try {
@@ -9,6 +10,7 @@ const startServer = async (app) => {
         app.use(bodyParser.urlencoded({ extended: false }));
         app.use(bodyParser.json());
         app.use(bodyParser.text());
+        app.use(errorHandler);
 
         app.listen(config.PORT, () => {
             console.log(`Server is up on port: ${config.PORT}`);

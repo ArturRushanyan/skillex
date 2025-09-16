@@ -2,14 +2,17 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const config = require("./configs/config");
 const errorHandler = require("./error/errorHandler");
+const routes = require("./routes/index");
 
 const startServer = async (app) => {
     try {
         app.use(cors());
-
         app.use(bodyParser.urlencoded({ extended: false }));
         app.use(bodyParser.json());
         app.use(bodyParser.text());
+
+        routes(app)
+
         app.use(errorHandler);
 
         app.listen(config.PORT, () => {

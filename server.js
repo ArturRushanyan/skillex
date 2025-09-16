@@ -1,7 +1,7 @@
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const config = require("./configs/config");
-const errorHandler = require("./error/errorHandler");
+const generalErrorHandler = require("./error/GeneralErrorHandler");
 const routes = require("./routes/index");
 
 const startServer = async (app) => {
@@ -13,7 +13,7 @@ const startServer = async (app) => {
 
         routes(app)
 
-        app.use(errorHandler);
+        app.use(generalErrorHandler);
 
         app.listen(config.PORT, () => {
             console.log(`Server is up on port: ${config.PORT}`);

@@ -1,7 +1,6 @@
-// TODO: rename file to generalErrorHandler
 const { INTERNAL_SERVER_ERROR } = require('../utils/constMessages');
 
-const errorHandler = (error, req, res, next) => {
+const generalErrorHandler = (error, req, res, next) => {
     return res.status(error.status || 500).send({
         success: false,
         error: {
@@ -10,4 +9,4 @@ const errorHandler = (error, req, res, next) => {
     });
 };
 
-module.exports = errorHandler;
+module.exports = generalErrorHandler;

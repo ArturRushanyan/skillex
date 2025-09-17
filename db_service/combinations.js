@@ -5,6 +5,7 @@ const insertCombinations = async (generatedItems, combination) => {
     try {
         await connection.beginTransaction();
 
+
         const itemsValuesCount = generatedItems.map(() => "(?)").join(", ");
         // NOTE: To ignore duplicate items
         const itemsInsertQuery = `INSERT IGNORE INTO items (name) VALUES ${itemsValuesCount}`;

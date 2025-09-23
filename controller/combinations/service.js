@@ -1,38 +1,85 @@
 function generateItems(inputArray) {
     let items = [];
-    let letterCode = 65; // using ASCII codes
+    let letterCode = 65; // ASCII code of letter "A"
 
-    inputArray.forEach((count, idx) => {
-        let prefix = String.fromCharCode(letterCode + idx);
-        for (let i = 1; i <= count; i++) {
-            items.push(`${prefix}${i}`);
-        }
-    });
+    for (let i = 0; i < inputArray.length; i++) {
+        let prefix = String.fromCharCode(letterCode + i);
+        items.push(`${prefix}1`);
+    }
 
     return items;
 }
+function generateUniqueCombinations(items, combinationLength) {
+    let result = [];
+    let itemsLength = items.length;
 
-function backtrack(items, length, start, result, combo = []) {
-    if (combo.length === length) {
-        // check no same prefix
-        let prefixes = combo.map((c) => c[0]);
-        if (new Set(prefixes).size === combo.length) {
-            result.push([...combo]);
+    if (combinationLength > itemsLength) {
+        return result;
+    }
+
+    let combinationIndexes = [...Array(combinationLength).keys()];
+
+    while (true) {
+        let currentCombo = combinationIndexes.map((index) => items[index]);
+
+        let prefixes = currentCombo.map((item) => item[0]);
+
+        result.push(currentCombo);
+
+        let moveIndex = combinationLength - 1;
+
+        // Move leftwards until we find an index that can still be incremented
+        while (
+            moveIndex >= 0 &&
+            combinationIndexes[moveIndex] ===
+            itemsLength - combinationLength + moveIndex
+            ) {
+            moveIndex--;
         }
-        return;
+
+        if (moveIndex < 0) {
+            break;
+        }
+
+        combinationIndexes[moveIndex]++;
+
+        for (let j = moveIndex + 1; j < combinationLength; j++) {
+            combinationIndexes[j] = combinationIndexes[j - 1] + 1;
+        }
     }
 
-    for (let i = start; i < items.length; i++) {
-        combo.push(items[i]);
-        backtrack(items, length, i + 1, result, combo);
-        combo.pop();
-    }
+    return result;
 }
 
-function generateCombinations(items, length) {
+function expandCombinations(combinations, counts) {
     let result = [];
-    backtrack(items, length, 0, result);
+
+    for (let i = 0; i < counts.length; i++) {
+        if (counts[i] === 1) {
+            continue;
+        }
+        const letter = String.fromCharCode(65 + i);
+
+        for (let j = 2; j <= counts[i]; j++) {
+            for (let combo of combinations) {
+                const indexofItem = combo.indexOf(`${letter}1`);
+
+                if (indexofItem >= 0) {
+                    const newCombo = [...combo];
+                    newCombo[indexofItem] = `${letter}${j}`;
+                    result.push([...newCombo]);
+                }
+            }
+        }
+    }
+
     return result;
+}
+
+function generateCombinations(preparedItems, lengthOfCombinations, items) {
+    const uniqueCombinations = generateUniqueCombinations(preparedItems, lengthOfCombinations);
+    const expendedCombinations = expandCombinations(uniqueCombinations, items)
+    return [...uniqueCombinations, ...expendedCombinations];
 }
 
 

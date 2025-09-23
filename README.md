@@ -9,6 +9,50 @@ This project implements a simple **Node.js + MySQL API** that:
 - Handles database operations with **transactions**.
 - Includes a **migration runner** that applies SQL migrations in order and tracks which have been applied.
 
+### Combination Generator
+
+### 1. `generateItems(inputArray)`
+Generates the base list of items, where each item is represented by a capital letter (`A`, `B`, `C`, …) followed by the index `1`.
+
+- **Example:**
+  ```js
+  generateItems([1,2,1]);
+  // Output: [ 'A1', 'B1', 'C1' ]
+  ```
+
+### 2. `generateUniqueCombinations(items, combinationLength)`
+
+Generates all unique combinations of the given items with the specified length.
+- Returns (Array of arrays),each inner array represents a unique combination of items.
+   ```js
+   generateUniqueCombinations(['A1','B1','C1'], 2);
+   // Output:
+   [
+     [ 'A1', 'B1' ],
+     [ 'A1', 'C1' ],
+     [ 'B1', 'C1' ]
+   ]
+   ```
+
+### 3. `expandCombinations(combinations, counts)`
+
+Expands the base combinations by adding variations of items that have multiple versions.
+For example, if `B` has a count of 2, will be generated new combination where `B1` will be replaced with `B2`.
+
+- Returns (Array of arrays). A list of expanded combinations, including variations for letters with multiple indices.
+
+    ```js
+    const base = [ ['A1','B1'], ['A1','C1'], ['B1','C1'] ];
+    const counts = [1,2,1];
+
+    expandCombinations(base, counts);
+    // Output:
+    [
+      [ 'A1', 'B2' ],
+      [ 'B2', 'C1' ]
+    ]
+   ```
+
 ---
 
 ## Tech Stack

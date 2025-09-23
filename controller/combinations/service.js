@@ -1,9 +1,9 @@
+const { FIRST_LETTER_CODE } = require('../../utils/constants')
 function generateItems(inputArray) {
     let items = [];
-    let letterCode = 65; // ASCII code of letter "A"
 
     for (let i = 0; i < inputArray.length; i++) {
-        let prefix = String.fromCharCode(letterCode + i);
+        let prefix = String.fromCharCode(FIRST_LETTER_CODE + i);
         items.push(`${prefix}1`);
     }
 
@@ -21,8 +21,6 @@ function generateUniqueCombinations(items, combinationLength) {
 
     while (true) {
         let currentCombo = combinationIndexes.map((index) => items[index]);
-
-        let prefixes = currentCombo.map((item) => item[0]);
 
         result.push(currentCombo);
 
@@ -58,7 +56,7 @@ function expandCombinations(combinations, counts) {
         if (counts[i] === 1) {
             continue;
         }
-        const letter = String.fromCharCode(65 + i);
+        const letter = String.fromCharCode(FIRST_LETTER_CODE + i);
 
         for (let j = 2; j <= counts[i]; j++) {
             for (let combo of combinations) {

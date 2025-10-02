@@ -6,7 +6,7 @@ const generate = async (req, res, next) => {
         const { items, length } = req.body;
 
         const preparedItems = generateItems(items);
-        const generatedCombinations = generateCombinations(preparedItems, length, items);
+        const generatedCombinations = generateCombinations(preparedItems, length);
         const data = await insertCombinations(preparedItems, generatedCombinations);
 
         return res.status(200).json(data);

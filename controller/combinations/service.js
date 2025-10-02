@@ -1,15 +1,19 @@
 const { FIRST_LETTER_CODE } = require('../../utils/constants')
+
 function generateItems(inputArray) {
     let items = [];
 
-    for (let i = 0; i < inputArray.length; i++) {
-        let prefix = String.fromCharCode(FIRST_LETTER_CODE + i);
-        items.push(`${prefix}1`);
-    }
+    inputArray.forEach((count, idx) => {
+        let prefix = String.fromCharCode(FIRST_LETTER_CODE + idx);
+        for (let i = 1; i <= count; i++) {
+            items.push(`${prefix}${i}`);
+        }
+    });
 
     return items;
 }
-function generateUniqueCombinations(items, combinationLength) {
+
+function generateUniqueCombinations (items, combinationLength) {
     let result = [];
     let itemsLength = items.length;
 
@@ -20,9 +24,12 @@ function generateUniqueCombinations(items, combinationLength) {
     let combinationIndexes = [...Array(combinationLength).keys()];
 
     while (true) {
-        let currentCombo = combinationIndexes.map((index) => items[index]);
+        let combo = combinationIndexes.map((i) => items[i]);
 
-        result.push(currentCombo);
+        let prefixes = combo.map((c) => c[0]);
+        if (new Set(prefixes).size === combo.length) {
+            result.push(combo);
+        }
 
         let moveIndex = combinationLength - 1;
 
@@ -49,35 +56,9 @@ function generateUniqueCombinations(items, combinationLength) {
     return result;
 }
 
-function expandCombinations(combinations, counts) {
-    let result = [];
-
-    for (let i = 0; i < counts.length; i++) {
-        if (counts[i] === 1) {
-            continue;
-        }
-        const letter = String.fromCharCode(FIRST_LETTER_CODE + i);
-
-        for (let j = 2; j <= counts[i]; j++) {
-            for (let combo of combinations) {
-                const indexofItem = combo.indexOf(`${letter}1`);
-
-                if (indexofItem >= 0) {
-                    const newCombo = [...combo];
-                    newCombo[indexofItem] = `${letter}${j}`;
-                    result.push([...newCombo]);
-                }
-            }
-        }
-    }
-
-    return result;
-}
-
-function generateCombinations(preparedItems, lengthOfCombinations, items) {
+function generateCombinations(preparedItems, lengthOfCombinations) {
     const uniqueCombinations = generateUniqueCombinations(preparedItems, lengthOfCombinations);
-    const expendedCombinations = expandCombinations(uniqueCombinations, items)
-    return [...uniqueCombinations, ...expendedCombinations];
+    return uniqueCombinations;
 }
 
 
